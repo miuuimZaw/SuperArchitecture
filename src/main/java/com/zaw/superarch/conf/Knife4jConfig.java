@@ -1,5 +1,6 @@
 package com.zaw.superarch.conf;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -13,6 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @author zhangaiwen
  */
 @Configuration
+@EnableKnife4j
 public class Knife4jConfig {
 
     @Bean(value = "defaultApi3")

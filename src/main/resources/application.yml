@@ -1,0 +1,65 @@
+# 设置项目端口号
+server:
+  port: 3030
+
+# Knife4j
+knife4j:
+  enable: false
+
+# RMQ
+rocketmq:
+  consumer:
+#    consumPatternClass: XXX.listen.ConcurrentMessageListen
+    consumeThreadMax: 64
+    consumeThreadMin: 20
+    groupName: RMQ-SUPERARCHITECURE
+    namesrvAddr: 1.1.1.1:9876
+    topic: RMQ-SUPERARCHITECURE-DEMO
+  producer:
+    groupName: RMQ-SUPERARCHITECURE
+    maxMessageSize: 4096
+    namesrvAddr: 1.1.1.1:9876
+    retryTimesWhenSendFailed: 3
+    sendMsgTimeout: 5000
+
+
+# MQTT服务器基本配置
+spring:
+  mqtt:
+    client:
+      # MQTT连接服务器默认客户端ID
+      id: mqttId
+    default:
+      # MQTT默认的消息推送主题,实际可在调用接口时指定
+      topic: topic
+    # 密码
+    password: password
+    # MQTT服务器连接地址,如果有多个，用逗号隔开
+    url: tcp://127.0.0.1:61613
+    # 用户名
+    username: admin
+    # 连接超时
+    completionTimeout: 3000
+
+#spring:
+#  main:
+#    log-startup-info: true
+
+personal:
+  str: 普通字符
+  escapeStr: "双引号直接输出\n特殊字符"
+  specialStr: '单引号可以转义\n特殊字符'
+  bol: false
+  intValue: 56789
+  dolValue: 88.889
+  objList:
+    - dog
+    - cat
+    - monkey
+  objSet: [77,88,99]
+  objMap: [k1: v1, k2:v2]
+  positionList:
+    - name: zhangaiwen
+      address: shanghai
+    - name: mingming
+      address: beijing
