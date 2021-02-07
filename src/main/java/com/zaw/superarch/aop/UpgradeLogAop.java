@@ -1,6 +1,8 @@
 package com.zaw.superarch.aop;
 
 import com.zaw.superarch.anno.LogOut;
+import com.zaw.superarch.service.bo.LogInfoBO;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -27,6 +29,7 @@ import java.util.regex.Pattern;
  *
  * @author zhangaiwen
  */
+@Log4j2
 @Aspect
 @Component
 public class UpgradeLogAop {
@@ -44,8 +47,8 @@ public class UpgradeLogAop {
      */
     @AfterThrowing(pointcut = "aspectjPoint()", throwing = "e")
     public void fail(JoinPoint p, Throwable e) {
-        // TODO 异常时执行
-        getBasicInfo(p);
+        LogInfoBO basicInfo = getBasicInfo(p);
+        log.info("log >>> 异常通知...method:{},description:{},exception:{}", basicInfo.getMethodName(), basicInfo.getAnnoDesc(), e.getMessage());
     }
 
     /**
@@ -53,8 +56,8 @@ public class UpgradeLogAop {
      */
     @AfterReturning("aspectjPoint()")
     public void success(JoinPoint p) {
-        // TODO 没有异常正确执行完成执行
-        getBasicInfo(p);
+        LogInfoBO basicInfo = getBasicInfo(p);
+        log.info("log >>> 后置通知...method:{},description:{}", basicInfo.getMethodName(), basicInfo.getAnnoDesc());
     }
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
@@ -65,9 +68,10 @@ public class UpgradeLogAop {
     /**
      * 获取切面的基础信息
      *
-     * @param p
+     * @param p 切面
+     * @return 日志基础信息
      */
-    private void getBasicInfo(JoinPoint p) {
+    private LogInfoBO getBasicInfo(JoinPoint p) {
         // 方法名
         String methodName = p.getSignature().getName();
         // 注解详情
@@ -77,6 +81,7 @@ public class UpgradeLogAop {
         if (Objects.nonNull(logAnno)) {
             desc = logAnno.description();
         }
+        return new LogInfoBO(methodName, desc);
     }
 
     /**
